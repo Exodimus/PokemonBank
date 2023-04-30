@@ -1,0 +1,43 @@
+.box-shadow{
+    box-shadow: 1px 1px 11px 4px rgba(97,92,92,0.74);
+-webkit-box-shadow: 1px 1px 11px 4px rgba(97,92,92,0.74);
+-moz-box-shadow: 1px 1px 11px 4px rgba(97,92,92,0.74);
+}
+
+.lb-form{
+    font-size: 1.5rem;
+}
+
+.bg-gray{
+    background-color: rgba(236, 233, 233, 0.74);
+}
+
+.fondo{
+    background-image: url(../img/pokemonBank.jpg);
+    height: 50vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.contenedor-main{
+    height: 45vh;
+}
+
+footer{
+    height: 5vh;
+}
+
+.pagar{
+    cursor: pointer;
+}
+
+.transacList{
+    height: 60%;
+    overflow-y: scroll;
+}
+
+#acquisitions {
+    max-height: 50%;
+  }
+
