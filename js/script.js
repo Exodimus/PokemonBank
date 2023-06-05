@@ -2,17 +2,38 @@
 const navItems = document.querySelectorAll('.nav-item');
 const lblAct = document.querySelector('.lblAct');
 const div = document.querySelector('.mb-3');
-const btnLogin = document.querySelector('.btnLogin');
+const formLogin = document.querySelector('.login');
+const pin = document.querySelector('#pin');
 //const transacList = document.querySelector('.transacList');
 
-//Añade alerta al boton si el btnLogin existe
-if(btnLogin != null){
-  btnLogin.onclick = function () {
-    swal("Credenciales correctas", "", "success").then(() =>{
-      window.location = "dashboard.html";
-    }) ;
+//Valida el login
+if (formLogin != null) {
+  formLogin.onsubmit = function (e) {
+    e.preventDefault();
+    valor = pin.value;
+    if(valor == null || valor.length == 0)
+      swal("Ingresa tu pin", "", "error")
+    else{
+      if(isNaN(valor))
+        swal("Tu pin es númerico", "", "error")
+
+        else{
+        if(valor == "1234"){
+          swal("Pin correcto", "", "success").then(() =>{
+            window.location = "dashboard.html";
+          })
+        } else
+          swal("Pin incorrecto", "", "error")
+      }
+    }
   }
 }
+
+  /**
+   * 
+   *    ;
+   */
+
 
 // Recorre todos los items
 navItems.forEach(navItem => {
