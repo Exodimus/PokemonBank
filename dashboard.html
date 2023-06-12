@@ -43,15 +43,17 @@
             </div>
             <div class="row justify-content-center align-items-center" style="height: 40vh;">
               <div class="col-8 justify-content-center">
-                <form action="" method="post">
                   <div class="mb-3">
-                    <label for="formGroupExampleInput2" required class="form-label fw-bold lblAct">Nota</label>
-                    <input type="text" min="1" class="form-control" id="formGroupExampleInput2">
-                    <label for="formGroupExampleInput2" required class="form-label fw-bold lblAct">Monto a depositar</label>
-                    <input type="number" min="1" class="form-control" id="formGroupExampleInput2">
-                    <button type="submit" class="btn btn-primary mt-3 bg-success">Enter</button>
+                    <form action="" id="transacciones">
+                      <div class="mb-3 dashboard">
+                        <label for="formGroupExampleInput2" required class="form-label fw-bold lblAct">Nota</label>
+                        <input type="text" min="1" class="form-control" id="nota">
+                        <label for="formGroupExampleInput2" required class="form-label fw-bold lblAct">Monto a depositar</label>
+                        <input type="number" min="1" class="form-control" id="monto">
+                        <button type="submit" id="enviar" onclick="transactControl()" class="btn btn-primary depositar mt-3 bg-success">Enter</button>
+                      </div>
+                    </form>
                   </div>
-                </form>
               </div>
             </div>
           </div>
