@@ -44,7 +44,6 @@ navItems.forEach(navItem => {
     // Verifica el elemento seleccionado
     switch (navItem.querySelector('.nav-link').textContent) {
         case 'Depósito':
-          console.log(btnTransac);
           btnTransac.classList.add("depositar")
             div.innerHTML = `<label for="formGroupExampleInput2" required class="form-label fw-bold lblAct">Nota</label>
             <input type="text" min="1" class="form-control" id="nota">
@@ -61,25 +60,25 @@ navItems.forEach(navItem => {
             <button type="submit" id="enviar" onclick="transactControl()"  class="btn btn-primary retirar mt-3 bg-success">Enter</button>`;
           break;
         case 'Consultar saldo':
-            div.innerHTML = `<h1 class="text-center">El saldo disponible es: $${localStorage.getItem("saldo")}</h1>`;            
+            div.innerHTML = `<h1 class="text-center">El saldo disponible es: $${saldo}</h1>`;            
           break;
         case 'Pago de servicios':
             div.innerHTML = `<ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               Energía eléctrica
-              <span class="badge bg-primary rounded-pill p-2 pagar">Pagar</span>
+              <span class="badge bg-primary rounded-pill p-2 pagar" onclick="servicios(50, 'Energía eléctrica')">Pagar</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               Agua potable
-              <span class="badge bg-primary rounded-pill p-2 pagar">Pagar</span>
+              <span class="badge bg-primary rounded-pill p-2 pagar" onclick="servicios(5, 'Agua potable')">Pagar</span>
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
+            <li class="list-group-item d-flex justify-content-between  align-items-center">
               Internet
-              <span class="badge bg-primary rounded-pill p-2 pagar">Pagar</span>
+              <span class="badge bg-primary rounded-pill p-2 pagar" onclick="servicios(35, 'Internet')">Pagar</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               Telefonía
-              <span class="badge bg-primary rounded-pill p-2 pagar">Pagar</span>
+              <span class="badge bg-primary rounded-pill p-2 pagar" onclick="servicios(20, 'Línea fija y datos')">Pagar</span>
             </li>
           </ul>`;
           break;
@@ -87,11 +86,41 @@ navItems.forEach(navItem => {
       } 
   });
 });
-  /**
-   * 
-   *    ;
-   */
 
+  // Obtener la fecha y hora actual
+  var fechaActual = new Date();
+
+  // Obtener los componentes de la fecha y hora actual
+  var año = fechaActual.getFullYear();
+  var mes = fechaActual.getMonth() + 1; // Los meses van de 0 a 11
+  var dia = fechaActual.getDate();
+  var hora = fechaActual.getHours();
+  var minutos = fechaActual.getMinutes();
+  var segundos = fechaActual.getSeconds();
+  
+  var fechaHoraActual = dia + '/' + mes + '/' + año + ' ' + hora + ':' + minutos + ':' + segundos;
+  
+  function servicios(monto, nota){
+    if (monto <= saldo) {
+      saldo -= monto;
+      historial.push({ tipo: "retiro", monto: monto, nota: nota });
+      //guarda los datos en local storage
+      localStorage.setItem("saldo", saldo);
+      localStorage.setItem("historial", JSON.stringify(historial));
+
+      swal("Transacción realizada correctamente", "", "success").then(() =>{
+        //Genera pdf
+        var doc = new jsPDF();
+        doc.setFont("helvetica"); // Cambiar la fuente a Helvetica
+        doc.setFontSize(12); // Cambiar el tamaño de fuente a 12
+        doc.text(`Tipo de transacción: Retiro\n Monto: $${monto}\n Nota: ${nota}\n Fecha: ${fechaHoraActual}`, 20, 20, )
+        doc.save('reporte.pdf')
+      })
+    } else {
+      swal("Saldo insuficiente", "", "error")
+    }
+  }
+  //Maneja las transacciones
   function transactControl() {
     let monto = parseInt(document.querySelector("#monto").value);
     let nota = document.querySelector("#nota").value;
@@ -105,6 +134,14 @@ navItems.forEach(navItem => {
         //Limpia los campos
         document.getElementById("monto").value = "";
         document.getElementById("nota").value = "";
+        swal("Transacción realizada correctamente", "", "success").then(() =>{
+          //Genera pdf
+          var doc = new jsPDF();
+          doc.setFont("helvetica"); // Cambiar la fuente a Helvetica
+          doc.setFontSize(12); // Cambiar el tamaño de fuente a 12
+          doc.text(`Tipo de transacción: Depósito\n Monto: $${monto}\n Nota: ${nota}\n Fecha: ${fechaHoraActual}`, 20, 20, )
+          doc.save('reporte.pdf')
+        })
       } else {
         if (monto <= saldo) {
           saldo -= monto;
@@ -115,16 +152,24 @@ navItems.forEach(navItem => {
           //Limpia los campos
           document.getElementById("monto").value = "";
           document.getElementById("nota").value = "";
+
+          swal("Transacción realizada correctamente", "", "success").then(() =>{
+            //Genera pdf
+            var doc = new jsPDF();
+            doc.setFont("helvetica"); // Cambiar la fuente a Helvetica
+            doc.setFontSize(12); // Cambiar el tamaño de fuente a 12
+            doc.text(`Tipo de transacción: Retiro\n Monto: $${monto}\n Nota: ${nota}\n Fecha: ${fechaHoraActual}`, 20, 20, )
+            doc.save('reporte.pdf')
+          })
         } else {
-          console.log("Saldo insuficiente");
+          swal("Saldo insuficiente", "", "error")
         }
       }
     } else {
-      console.log("No se permiten campos vacíos");
+      swal("No se permiten campos vacíos", "", "error")
     }
   }
   
-
 
 //Función que limpia los campos
 function limpiarCampos() {
