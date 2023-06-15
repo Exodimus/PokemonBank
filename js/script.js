@@ -97,7 +97,6 @@ navItems.forEach(navItem => {
   var hora = fechaActual.getHours();
   var minutos = fechaActual.getMinutes();
   var segundos = fechaActual.getSeconds();
-  
   var fechaHoraActual = dia + '/' + mes + '/' + año + ' ' + hora + ':' + minutos + ':' + segundos;
   
   function servicios(monto, nota){
@@ -119,7 +118,9 @@ navItems.forEach(navItem => {
     } else {
       swal("Saldo insuficiente", "", "error")
     }
+
   }
+  
   //Maneja las transacciones
   function transactControl() {
     let monto = parseInt(document.querySelector("#monto").value);
@@ -128,13 +129,13 @@ navItems.forEach(navItem => {
       if (btnTransac.classList.contains("depositar")) {
         saldo += monto;
         historial.push({ tipo: "deposito", monto: monto, nota: nota });
-        //Guarda los datos en local storage
-        localStorage.setItem("saldo", saldo);
-        localStorage.setItem("historial", JSON.stringify(historial));
-        //Limpia los campos
-        document.getElementById("monto").value = "";
-        document.getElementById("nota").value = "";
         swal("Transacción realizada correctamente", "", "success").then(() =>{
+          //Guarda los datos en local storage
+          localStorage.setItem("saldo", saldo);
+          localStorage.setItem("historial", JSON.stringify(historial));
+          //Limpia los campos
+          document.getElementById("monto").value = "";
+          document.getElementById("nota").value = "";
           //Genera pdf
           var doc = new jsPDF();
           doc.setFont("helvetica"); // Cambiar la fuente a Helvetica
@@ -147,13 +148,13 @@ navItems.forEach(navItem => {
           saldo -= monto;
           historial.push({ tipo: "retiro", monto: monto, nota: nota });
           //guarda los datos en local storage
-          localStorage.setItem("saldo", saldo);
-          localStorage.setItem("historial", JSON.stringify(historial));
-          //Limpia los campos
-          document.getElementById("monto").value = "";
-          document.getElementById("nota").value = "";
 
           swal("Transacción realizada correctamente", "", "success").then(() =>{
+            localStorage.setItem("saldo", saldo);
+            localStorage.setItem("historial", JSON.stringify(historial));
+            //Limpia los campos
+            document.getElementById("monto").value = "";
+            document.getElementById("nota").value = "";
             //Genera pdf
             var doc = new jsPDF();
             doc.setFont("helvetica"); // Cambiar la fuente a Helvetica
@@ -222,6 +223,7 @@ function obtenerCantidadRetiros() {
   }, 0);
 }
 
+//Crea la gráfica
 function crearGrafica(){
     //Configuración para gráfica de pastel
     var datos = {
