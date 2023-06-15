@@ -7,7 +7,7 @@ const pin = document.querySelector('#pin');
 const btnTransac = document.querySelector('#enviar');
 const transacList = document.querySelector('.transacList')
 
-let saldo = localStorage.getItem("saldo") || 500;
+let saldo = parseInt(localStorage.getItem("saldo")) || 500;
 let historial = JSON.parse(localStorage.getItem("historial")) || [];
 
 //Valida el login
@@ -100,11 +100,12 @@ navItems.forEach(navItem => {
   var fechaHoraActual = dia + '/' + mes + '/' + año + ' ' + hora + ':' + minutos + ':' + segundos;
   
   function servicios(monto, nota){
+    monto = parseInt(monto);
     if (monto <= saldo) {
       saldo -= monto;
       historial.push({ tipo: "retiro", monto: monto, nota: nota });
       //guarda los datos en local storage
-      localStorage.setItem("saldo", saldo);
+      localStorage.setItem("saldo", saldo.toString());
       localStorage.setItem("historial", JSON.stringify(historial));
 
       swal("Transacción realizada correctamente", "", "success").then(() =>{
@@ -131,7 +132,7 @@ navItems.forEach(navItem => {
         historial.push({ tipo: "deposito", monto: monto, nota: nota });
         swal("Transacción realizada correctamente", "", "success").then(() =>{
           //Guarda los datos en local storage
-          localStorage.setItem("saldo", saldo);
+          localStorage.setItem("saldo", saldo.toString());
           localStorage.setItem("historial", JSON.stringify(historial));
           //Limpia los campos
           document.getElementById("monto").value = "";
